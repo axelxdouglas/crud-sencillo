@@ -10,27 +10,49 @@ import uniqid from 'uniqid'
     const addNombre = (e)=>{
         e.preventDefault()
         const nuevoNombre = {
-            id:uniqid(),
-            tituloNombre:nombre
+            id: uniqid(),
+            tituloNombre: nombre
         }
         setListaNombres([...listanombres, nuevoNombre])
+        setNombre('')
     }
 
-
-
-
-
-
+    const deleteNombre = (id) =>{
+        const nuevaArray = listanombres.filter(item => item.id !== id)
+        setListaNombres(nuevaArray)
+    }
 
   return (
     <div>
         <h2>Aplicación de CRUD BÁSICA</h2>
         <div className="row">
-            <div className="col">Listado de nombres</div>
+            <div className="col">
+                <h2>Listado de nombres</h2>
+                <ul className='list-group'>
+                    {
+                        listanombres.map(item =>
+                            
+                            <li key="{item.id}" className='list-group-item'>
+                                {item.tituloNombre}
+                                <button 
+                                className="btn btn-danger float-right"
+                                onClick={()=> {deleteNombre(item.id)}}
+                                >
+                                    BORRAR
+                                </button>
+                            </li>
+                            
+                            )
+                    }
+                </ul>
+            </div>
             <div className="col">
                 <h2>Formulario para añadir nombres</h2>
                 <form onSubmit={(e)=>addNombre(e)} className="form-group">
-                    <input onChange={(e)=>{setNombre(e.target.value)}} className="form-control mb-3" type="text" placeholder="Introduce el nombre" />
+                    <input 
+                            onChange={(e)=>{setNombre(e.target.value)}} className="form-control mb-3" type="text" placeholder="Introduce el nombre"
+                            value={nombre}
+                     />
                     <input className="btn btn-info btn-block" type="submit" value="Registrar Nombre" />
                 </form>
             </div>
